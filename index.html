@@ -3,18 +3,39 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Song List</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>My Songs</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main class="container">
-    <h1>🎶 My Songs</h1>
-    <form id="songForm">
-      <input type="text" id="songInput" placeholder="Enter song title..." required />
-      <button type="submit">Add Song</button>
-    </form>
+  <div class="container">
+    <h1>My Songs</h1>
+    <input type="text" id="songInput" placeholder="Enter song title..." />
+    <div class="buttons">
+      <button id="addSong">Add Song</button>
+      <button id="stop">Stop</button>
+    </div>
     <ul id="songList"></ul>
-  </main>
-  <script src="script.js"></script>
+  </div>
+
+  <script>
+    const addSongBtn = document.getElementById('addSong');
+    const stopBtn = document.getElementById('stop');
+    const songInput = document.getElementById('songInput');
+    const songList = document.getElementById('songList');
+
+    addSongBtn.addEventListener('click', () => {
+      const title = songInput.value.trim();
+      if (title) {
+        const li = document.createElement('li');
+        li.textContent = title;
+        songList.appendChild(li);
+        songInput.value = '';
+      }
+    });
+
+    stopBtn.addEventListener('click', () => {
+      songList.innerHTML = '';
+    });
+  </script>
 </body>
 </html>
