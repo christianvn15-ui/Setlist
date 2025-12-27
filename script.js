@@ -24,42 +24,56 @@ function addSong(title) {
   li.textContent = title;
   li.setAttribute('draggable', 'true');
   songList.appendChild(li);
+
+  // Add drag events to each new item
+  li.addEventListener('dragstart', handleDragStart);
+  li.addEventListener('dragover', handleDragOver);
+  li.addEventListener('drop', handleDrop);
+  li.addEventListener('dragend', handleDragEnd);
 }
 
 // Drag-and-drop logic
 let draggedItem = null;
 
-songList.addEventListener('dragstart', (e) => {
-  draggedItem = e.target;
-  e.target.style.opacity = '0.5';
-});
+function handleDragStart(e) {
+  draggedItem = this;
+  this.style.opacity = '0.5';
+}
 
-songList.addEventListener('dragend', (e) => {
-  e.target.style.opacity = '1';
+function handleDragEnd(e) {
+  this.style.opacity = '1';
   saveSongs(); // Save after drag ends
-});
+}
 
-songList.addEventListener('dragover', (e) => {
+function handleDragOver(e) {
   e.preventDefault();
-});
+  const bounding = this.getBoundingClientRect();
+  const offset = e.clientY - bounding.top;
+  const half = bounding.height / 2;
 
-songList.addEventListener('drop', (e) => {
+  if (offset > half) {
+    this.style.borderBottom = '2px solid #0078d4';
+    this.style.borderTop = '';
+  } else {
+    this.style.borderTop = '2px solid #0078d4';
+    this.style.borderBottom = '';
+  }
+}
+
+function handleDrop(e) {
   e.preventDefault();
-  if (e.target.tagName === 'LI' && e.target !== draggedItem) {
-    const allItems = [...songList.children];
-    const draggedIndex = allItems.indexOf(draggedItem);
-    const targetIndex = allItems.indexOf(e.target);
+  this.style.borderTop = '';
+  this.style.borderBottom = '';
 
-    if (draggedIndex < targetIndex) {
-      songList.insertBefore(draggedItem, e.target.nextSibling);
+  if (draggedItem !== this) {
+    const bounding = this.getBoundingClientRect();
+    const offset = e.clientY - bounding.top;
+    const half = bounding.height / 2;
+
+    if (offset > half) {
+      songList.insertBefore(draggedItem, this.nextSibling);
     } else {
-      songList.insertBefore(draggedItem, e.target);
+      songList.insertBefore(draggedItem, this);
     }
   }
-});
-
-// Save current list to localStorage
-function saveSongs() {
-  const titles = [...songList.children].map(li => li.textContent);
-  localStorage.setItem('songs', JSON.stringify(titles));
 }
