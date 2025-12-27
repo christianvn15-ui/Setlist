@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Song List</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0078d4" />
+
+  <!-- Icons -->
+  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+</head>
+<body>
+  <main class="container">
+    <h1>🎶 My Songs</h1>
+    <form id="songForm">
+      <input type="text" id="songInput" placeholder="Enter song title..." required />
+      <button type="submit">Add Song</button>
+    </form>
+    <ul id="songList"></ul>
+
+    <!-- Install button (hidden until available) -->
+    <button id="installBtn" style="display:none; margin-top:1rem;">📲 Install App</button>
+  </main>
+
+  <!-- App logic -->
+  <script src="script.js"></script>
+  <!-- Install prompt logic -->
+  <script src="install.js"></script>
+
+  <!-- Register service worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.error('SW registration failed:', err));
+    }
+  </script>
+</body>
+</html>
