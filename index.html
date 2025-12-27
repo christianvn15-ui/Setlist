@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="style.css" />
 
   <!-- PWA manifest -->
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
   <meta name="theme-color" content="#0078d4" />
 
   <!-- Icons -->
-  <link rel="icon" href="icons/icon-192.png" type="image/png" />
+  <link rel="icon" href="/icons/icon-192.png" type="image/png" />
 </head>
 <body>
   <main class="container">
@@ -27,16 +27,18 @@
   </main>
 
   <!-- App logic -->
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
   <!-- Install prompt logic -->
-  <script src="install.js"></script>
+  <script src="/install.js"></script>
 
   <!-- Register service worker -->
   <script>
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('Service Worker registered'))
-        .catch(err => console.error('SW registration failed:', err));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => console.log('Service Worker registered:', reg.scope))
+          .catch(err => console.error('SW registration failed:', err));
+      });
     }
   </script>
 </body>
