@@ -2,7 +2,7 @@ const songForm = document.getElementById('songForm');
 const songInput = document.getElementById('songInput');
 const songList = document.getElementById('songList');
 
-// Load saved songs
+// Load saved songs on page load
 window.addEventListener('DOMContentLoaded', () => {
   const savedSongs = JSON.parse(localStorage.getItem('songs')) || [];
   savedSongs.forEach(title => addSong(title));
@@ -25,7 +25,7 @@ function addSong(title) {
   li.setAttribute('draggable', 'true');
   songList.appendChild(li);
 
-  // Add drag events
+  // Attach drag events
   li.addEventListener('dragstart', handleDragStart);
   li.addEventListener('dragover', handleDragOver);
   li.addEventListener('drop', handleDrop);
